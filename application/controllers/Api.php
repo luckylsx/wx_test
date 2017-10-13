@@ -10,13 +10,13 @@ class Api extends CI_Controller
     public function index()
     {
         //$wechatObj = new wechatCallbackapiTest();
-        $this->createMenu();
         $echoStr = $this->input->get('echostr');
         if ($echoStr){
             $this->valid($echoStr);
         }else{
             $this->responseMsg();
         }
+        $this->createMenu();
         //$this->load->library("Makemenu");
         //$this->makemenu->dolist();
     }
