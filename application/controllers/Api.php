@@ -16,13 +16,13 @@ class Api extends CI_Controller
     {
         //$wechatObj = new wechatCallbackapiTest();
         $echoStr = $this->input->get('echostr');
+        $this->load->library("Makemenu");
+        $this->makemenu->dolist();
         if ($echoStr){
             $this->valid($echoStr);
         }else{
             $this->responseMsg();
         }
-        $this->load->library("Makemenu");
-        $this->makemenu->dolist();
     }
     //定义验证签名方法
     public function valid($echoStr)
