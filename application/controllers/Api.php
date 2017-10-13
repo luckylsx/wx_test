@@ -7,6 +7,13 @@ class Api extends CI_Controller
 {
     //定义token
     const TOKEN = "luckylsx";
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->library("Makemenu");
+        $this->makemenu->dolist();
+    }
+
     public function index()
     {
         //$wechatObj = new wechatCallbackapiTest();
