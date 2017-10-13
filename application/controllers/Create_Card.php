@@ -2,15 +2,58 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 class Create_Card extends CI_Controller
 {
-    public function getAccessToken( $appid, $secret ) {
+    protected $appid;
+    protected $appsecret;
+    protected $openid;
+    const TOKEN = "luckylsx";
+    public function __construct()
+    {
+        parent::__construct();
+        $this->appid = 'wx3f2070ceecbb4b40';
+        $this->appsecret = '0cc0e0e4bcac4049ac0e0308ddf8c320';
+        $this->openid = 'o1eypwn9DxGuI7iB2yk0xTrp5OUw';
+    }
+
+    public function index()
+    {
+        //$wechatObj = new wechatCallbackapiTest();
+        $echoStr = $this->input->get('echostr');
+        if ($echoStr){
+            $this->valid($echoStr);
+        }else{
+            $this->responseMsg();
+        }
+    }
+
+    public function getAccessToken() {
         $url = "https://api.weixin.qq.com/cgi-bin/token";
-        $data = "grant_type=client_credential" . "&appid=" . $appid  . "&secret=" .  $secret ;
+        $data = "grant_type=client_credential" . "&appid=" . $this->appid  . "&secret=" .  $this->appsecret ;
         $resp = http_post( $url, $data );
+        $token = json_decode($resp,true);
+        $access_token = $token['access_token'];
+        //http请求方式: GET https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN
+        $ourl = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$access_token.'&openid='.$this->openid.'&lang=zh_CN';
+        $udata = http_post($ourl,'');
+        $user = json_decode($udata,true);
+        echo "<pre>";
+        print_r($user);
+        echo "</pre>";
+        //var_dump($user);
+        die;
         //截取token
         $token=strstr( $resp, "\":\"" );
         $token=trim( $token, "\":\"" );
         $token=strstr( $token, "\",\"", true );
+        echo $token;
         return $token;
+    }
+    //定义验证签名方法
+    public function valid($echoStr)
+    {
+        if ($this->checkSignature()){
+            echo $echoStr;
+            exit;
+        }
     }
     public function upload_logo($access_token){
         // 上传图片获得logo链接
@@ -46,5 +89,63 @@ class Create_Card extends CI_Controller
         $resp = http_post( $url, $file );
         var_dump($resp);
 //        echo "$resp<br>";
+    }
+    public function responseMsg()
+    {
+        //get post data, May be due to the different environments
+        $postStr = file_get_contents('php://input');
+
+        //extract post data
+        if (!empty($postStr)){
+
+            $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
+            $fromUsername = $postObj->FromUserName;
+            $toUsername = $postObj->ToUserName;
+            $keyword = trim($postObj->Content);
+            $time = time();
+            $textTpl = "<xml>
+							<ToUserName><![CDATA[%s]]></ToUserName>
+							<FromUserName><![CDATA[%s]]></FromUserName>
+							<CreateTime>%s</CreateTime>
+							<MsgType><![CDATA[%s]]></MsgType>
+							<Content><![CDATA[%s]]></Content>
+							<FuncFlag>0</FuncFlag>
+							</xml>";
+            if(!empty( $keyword ))
+            {
+                $msgType = "text";
+                $contentStr = "Welcome to wechat world!";
+                $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
+                echo $resultStr;
+            }else{
+                echo "Input something...";
+            }
+
+        }else {
+            echo "";
+            exit;
+        }
+    }
+    //验证签名
+    public function checkSignature()
+    {
+        //$signature = $_GET["signature"];
+        $signature = $this->input->get("signature");
+        //$timestamp = $_GET["timestamp"];
+        $timestamp = $this->input->get("timestamp");
+        //$nonce = $_GET["nonce"];
+        $nonce = $this->input->get("nonce");
+
+        $token = self::TOKEN;
+        $tmpArr = array($token, $timestamp, $nonce);
+        sort($tmpArr);
+        $tmpStr = implode( $tmpArr );
+        $tmpStr = sha1( $tmpStr );
+
+        if( $tmpStr == $signature ){
+            return true;
+        }else{
+            return false;
+        }
     }
 }

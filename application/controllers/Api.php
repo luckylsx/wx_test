@@ -16,9 +16,6 @@ class Api extends CI_Controller
         }else{
             $this->responseMsg();
         }
-        $this->createMenu();
-        //$this->load->library("Makemenu");
-        //$this->makemenu->dolist();
     }
     //定义验证签名方法
     public function valid($echoStr)
