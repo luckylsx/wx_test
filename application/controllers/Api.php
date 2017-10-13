@@ -49,10 +49,34 @@ class Api extends CI_Controller
 							</xml>";
             if(!empty( $keyword ))
             {
-                $msgType = "text";
                 $contentStr = "Welcome to wechat world!";
-                $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
-                echo $resultStr;
+                switch ($postObj->MsgType){
+                    case 'event';
+                        if ($postObj->Event=='subscribe'){
+                            $msgType = "text";
+                            $contentStr = "欢迎订阅php自学开发！\n\r 每天进步一点，小学习大成就!请持续关注php自学开发。
+                        回复以下内容有你想要的：\n\r1:天气查询\n\r2:我想对你说...";
+                            $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
+                            echo $resultStr;
+                        }
+                        break;
+                    case 'text':
+                        switch ($keyword){
+                            case '1':
+                                $contentStr = "今天天气很好...";
+                                break;
+                            case '2':
+                                $contentStr = "每天学习一点，你越牛逼就有越多的人尊重你！";
+                                break;
+                            default:
+                                break;
+                        }
+                        $msgType = 'text';
+                        $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
+                        echo $resultStr;
+                    default:
+                        break;
+                }
             }else{
                 echo "Input something...";
             }
