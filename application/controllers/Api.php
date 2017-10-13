@@ -10,8 +10,6 @@ class Api extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->library("Makemenu");
-        $this->makemenu->dolist();
     }
 
     public function index()
@@ -23,6 +21,8 @@ class Api extends CI_Controller
         }else{
             $this->responseMsg();
         }
+        $this->load->library("Makemenu");
+        $this->makemenu->dolist();
     }
     //定义验证签名方法
     public function valid($echoStr)
