@@ -1,0 +1,33 @@
+{
+  "card": {
+    "card_type": "EXPERIENCE",
+    "experience": {
+      "base_info": {
+        "logo_url": "%s",
+        "brand_name": "tit 体验劵",
+        "title": "第一张卡劵",
+        "sub_title": "hello world!",
+        "color": "Color010",
+        "notice": "享受创建卡劵的乐趣吧",
+        "service_phone": "020-88888888",
+        "description": "1、使用时间\nXXXXX\n2、适用条件\nXXXXX\n3、是否预约\nXXXXX\n",
+        "source": "灌灌灌",
+        "date_info": {
+          "type":"DATE_TYPE_FIX_TIME_RANGE",
+          "begin_timestamp": 1437549651,
+          "end_timestamp": 1437569651
+        },
+        "sku": {
+          "quantity": 50000000
+        },
+        "location_id_list": [1],
+        "use_limit": 100,
+        "get_limit": 3,
+        "use_custom_code": false,
+        "bind_openid": false,
+        "can_share": false
+      },
+      "experience_detail": "欢迎体验"
+    }
+  }
+}
