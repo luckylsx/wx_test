@@ -10,8 +10,8 @@ class Api extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        //$this->load->library("Makemenu");
-        //$this->makemenu->dolist();
+        $this->load->library("Makemenu");
+        $this->makemenu->dolist();
     }
 
     public function index()
