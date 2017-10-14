@@ -128,8 +128,7 @@ class Api extends CI_Controller
             case 'event';
                 if ($postObj->Event=='subscribe'){
                     $msgType = "text";
-                    $contentStr = "欢迎订阅php自学开发！\n\r 每天进步一点，小学习大成就!请持续关注php自学开发。
-                        回复以下内容有你想要的：\n\r1:天气查询\n\r2:我想对你说...";
+                    $contentStr = "欢迎订阅php自学开发！\n\r 每天进步一点，小学习大成就!请持续关注php自学开发。\n\r回复以下内容有你想要的：\n\r1:天气查询\n\r2:我想对你说...";
                     $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
                     echo $resultStr;
                 }
@@ -149,6 +148,9 @@ class Api extends CI_Controller
                             $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
                             echo $resultStr;
                             break;
+                        case '新闻':
+                            $this->backNews($fromUsername,$toUsername,$time);
+                            break;
                         default:
                             break;
                     }
@@ -159,5 +161,40 @@ class Api extends CI_Controller
             default:
                 break;
         }
+    }
+    protected function backNews($fromUsername,$toUsername,$time)
+    {
+        $textTpl = 'xml>
+                    <ToUserName><![CDATA[%s]]></ToUserName>
+                    <FromUserName><![CDATA[%s]]></FromUserName>
+                    <CreateTime>%s</CreateTime>
+                    <MsgType><![CDATA[news]]></MsgType>
+                    <ArticleCount>2</ArticleCount>
+                    <Articles>
+                    <item>
+                    <Title><![CDATA[%s]]></Title> 
+                    <Description><![CDATA[%s]]></Description>
+                    <PicUrl><![CDATA[%s]]></PicUrl>
+                    <Url><![CDATA[%s]]></Url>
+                    </item>
+                    <item>
+                    <Title><![CDATA[%s]]></Title>
+                    <Description><![CDATA[%s]]></Description>
+                    <PicUrl><![CDATA[%s]]></PicUrl>
+                    <Url><![CDATA[%s]]></Url>
+                    </item>
+                    </Articles>
+                    </xml>';
+        $title1 = "今日新闻一...";
+        $description1 = "华为手机国庆后价格暴跌，这4款旗舰跌至“白菜价”！";
+        $picurl1 = base_url().'uploads/image/1.jpg';
+        $url1 = "www.news.baidu.com";
+        $title2 = "今日新闻二...";
+        $description2 = "iPhone8售价跌破五千，黄牛血亏，曾经苹果的辉煌将不复存在";
+        $picurl2 = base_url().'uploads/image/2.jpg';
+        $url2 = "www.news.qq.com";
+        $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $title1, $description1,$picurl1,$url1,$title2,
+        $description2,$picurl2,$url2);
+        echo $resultStr;
     }
 }
