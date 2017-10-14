@@ -202,6 +202,16 @@ class Api extends CI_Controller
                     echo "说点什么吧...";
                     exit;
                 }
+            case 'location':
+                //获取经纬度
+                $location_Y = $postObj->Location_Y;
+                $location_X = $postObj->Location_X;
+                $msgType = 'text';
+                $contentStr = "您好！已经收到您上传的地理位置信息。\n\r 经度是:{$location_Y} \n\r 维度是:{$location_X}
+                输入您关心的地方，即可查看其最近的位置信息！";
+                $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
+                echo $resultStr;
+                break;
             default:
                 break;
         }
