@@ -170,7 +170,7 @@ class Api extends CI_Controller
     }
     protected function backNews($fromUsername,$toUsername,$time)
     {
-        $textTpl = 'xml>
+        $textTpl = '<xml>
                     <ToUserName><![CDATA[%s]]></ToUserName>
                     <FromUserName><![CDATA[%s]]></FromUserName>
                     <CreateTime>%s</CreateTime>
