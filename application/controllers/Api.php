@@ -212,7 +212,8 @@ class Api extends CI_Controller
                 echo $resultStr;
                 $data = [
                     'longitude'=> $location_Y,
-                    'latitude' => $location_X
+                    'latitude' => $location_X,
+		    'join_time'=> date("Y-m-d H:i:s",time())
                 ];
                 $this->load->model("Location_model",'location');
                 $this->location->saveLocation($data,$fromUsername);
@@ -265,6 +266,14 @@ class Api extends CI_Controller
     {
         $this->load->model("news_model",'news');
         $d = $this->news->getNewslist();
+	$this->load->model("location_model",'location');
+	$data = [
+	    'longitude' => '122.223',
+	    'latitude' => '197.823'
+	];
+	$this->location->saveLocation($data,'wuefhueif8fu84hf');
+	echo "位置保存成功";
+	die;
         echo "<pre>";
         print_r($d);
         echo "</pre>";
