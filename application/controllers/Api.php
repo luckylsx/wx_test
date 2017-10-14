@@ -134,7 +134,12 @@ class Api extends CI_Controller
             case 'event';
                 if ($postObj->Event=='subscribe'){
                     $msgType = "text";
-                    $contentStr = "欢迎订阅php自学开发！\n\r 每天进步一点，小学习大成就!请持续关注php自学开发。\n\r回复以下内容有你想要的：\n\r1:天气查询\n\r2:我想对你说...";
+                    $contentStr = "欢迎订阅php自学开发！\n\r 每天进步一点，小学习大成就!请持续关注php自学开发。
+                    回复以下内容有你想要的：
+                    1:回复'天气'查看天气查询
+                    2:回复'说'查看我想对你说...
+                    3:回复新闻，查看今日新闻
+                    4:回复引入查看音乐列表 回复相应列表数字 听音乐";
                     $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
                     echo $resultStr;
                 }
@@ -142,13 +147,13 @@ class Api extends CI_Controller
             case 'text':
                 if (!empty($keyword)){
                     switch ($keyword){
-                        case '1':
+                        case '天气':
                             $contentStr = "今天天气很好...";
                             $msgType = 'text';
                             $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
                             echo $resultStr;
                             break;
-                        case '2':
+                        case '说':
                             $contentStr = "每天学习一点，你越牛逼就有越多的人尊重你！";
                             $msgType = 'text';
                             $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
@@ -158,9 +163,36 @@ class Api extends CI_Controller
                             $this->backNews($fromUsername,$toUsername,$time);
                             break;
                         case '音乐':
-                            $contentStr = '欢迎来到php自学开发在线音乐点播教程\n\r歌曲列表如下：\n\r 1、周杰伦-告白气球 \n\r 2、汪峰-北京 \n\r 3、那英-默';
+                            $contentStr = "欢迎来到php自学开发在线音乐点播教程\n\r歌曲列表如下：\n\r 1、周杰伦-告白气球 \n\r 2、汪峰-北京 \n\r 3、那英-默";
                             $msgType = 'text';
                             $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
+                            echo $resultStr;
+                            break;
+                        case preg_match('/^[1-9](\d){0,2}$/',$keyword):
+                            if ($keyword=='1'){
+                                $desc = "那英 - 默";
+                            }elseif ($keyword=='2'){
+                                $desc = "G.E.M. 邓紫棋 - 喜欢你";
+                            }elseif ($keyword=='3'){
+                                $desc = "G.E.M. 邓紫棋 - 泡沫";
+                            }else{
+                                $desc = "那英 - 默";
+                            }
+                            $musicTpl = '<xml>
+                                        <ToUserName><![CDATA[%s]]></ToUserName>
+                                        <FromUserName><![CDATA[%s]]></FromUserName>
+                                        <CreateTime>%s</CreateTime>
+                                        <MsgType><![CDATA[music]]></MsgType>
+                                        <Music>
+                                        <Title><![CDATA[音乐]]></Title>
+                                        <Description><![CDATA[%s]]></Description>
+                                        <MusicUrl><![CDATA[%s]]></MusicUrl>
+                                        <HQMusicUrl><![CDATA[%s]]></HQMusicUrl>
+                                        </Music>
+                                        </xml>
+                                        ';
+                            $musicUrl = "http://wx-test.lylucky.com/mp3{$desc}.mp3";
+                            $resultStr = sprintf($musicTpl, $fromUsername, $toUsername, $time,$desc,$musicUrl,$musicUrl);
                             echo $resultStr;
                             break;
                         default:
