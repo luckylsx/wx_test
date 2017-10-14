@@ -192,6 +192,13 @@ class Api extends CI_Controller
                             $musicUrl = "http://wx-test.lylucky.com/mp3/{$desc}.mp3";
                             $resultStr = sprintf($musicTpl, $fromUsername, $toUsername, $time,$desc,$musicUrl,$musicUrl);
                             echo $resultStr;
+                       }else if (preg_match('/^CXWZ([\x{4e00}-\x{9fa5}]+)/ui',$keyword,$res)){
+                           $this->load->model("Location_model",'location');
+                           $d = $this->location->getLocation($fromUsername);
+                           $contentStr = "http://api.map.baidu.com/place/search?query=".urlencode($res[1])."&location={$d['longitude']},{$d['latitude']}&radius=1000&region=上海&output=html&coord_type=bd09";
+                           $msgType = 'text';
+                           $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
+                           echo $resultStr;
                        }else{
                            $contentStr = "输入格式有误，请重新输入";
                            $msgType = 'text';
@@ -266,14 +273,10 @@ class Api extends CI_Controller
     {
         $this->load->model("news_model",'news');
         $d = $this->news->getNewslist();
-	$this->load->model("location_model",'location');
-	$data = [
-	    'longitude' => '122.223',
-	    'latitude' => '197.823'
-	];
-	$this->location->saveLocation($data,'wuefhueif8fu84hf');
-	echo "位置保存成功";
-	die;
+        $a='CXWZ北京';
+        preg_match('/^CXWZ([\X{4e00}-\x{9fa5}]+)/ui',$a,$res);
+        var_dump($res);
+        die;
         echo "<pre>";
         print_r($d);
         echo "</pre>";

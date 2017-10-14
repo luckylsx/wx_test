@@ -15,4 +15,10 @@ class Location_model extends CI_Model
             $this->db->update("members",$data,['wxname'=>$oppenid]);
         }
     }
+
+    public function getLocation($oppenid)
+    {
+        $location = $this->db->get_where("members",['wxname'=>$oppenid])->row_array();
+        return $location;
+    }
 }
