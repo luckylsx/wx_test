@@ -55,16 +55,40 @@ class Create_Card extends CI_Controller
             exit;
         }
     }
-    public function upload_logo($access_token){
+    public function upload_logo(){
         // 上传图片获得logo链接
+        $this->load->helper("url");
+        $config['upload_path']  = './uploads/image/';
+        $config['allowed_types']    = 'gif|jpg|png';
+        $config['file_name'] = time().uniqid();
+        //var_dump($_FILES['blob']);
+        $this->load->library('upload', $config);
+        //$blob = new CURLFile('C:/Users/Adminisrator/Desktop/11.jpg');
+        $this->upload->do_upload('logo');
+        if ( ! $this->upload->do_upload('logo'))
+        {
+            $error = array('error' => $this->upload->display_errors());
+            var_dump($error);
+            //$this->load->view('upload_form', $error);
+        }
+        else
+        {
+            $data = array('upload_data' => $this->upload->data());
+            $this->load->view('upload_success', $data);
+        }
+        die;
         $url = "https://api.weixin.qq.com/cgi-bin/media/uploadimg?access_token=" . urlencode( $access_token );
-        $file = array( "buffer"=>new CURLFile('C:/Users/lucky.li/Desktop/test.jpg') );
+        $file = array( "buffer"=>new CURLFile('C:/Users/Adminisrator/Desktop/test.jpg') );
         $resp = http_post( $url, $file );
         $logo_url = strstr($resp,"\":\"");
         $logo_url = trim($logo_url,"\":\"");
         $logo_url = substr($logo_url,0,-2);
         return $logo_url;
 
+    }
+    public function upload()
+    {
+        $this->load->view("upload_logo");
     }
     public function create(){
         //创建卡卷

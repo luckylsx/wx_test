@@ -8,7 +8,7 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="<?php echo $access_token['access_token'] ?>" method="post" enctype="multipart/form-data">
+    <form action="<?php echo site_url('Create_Card/upload_logo') ?>" method="post" enctype="multipart/form-data">
         <h3>上传卡券logo</h3>
         选择图片：<input type="file" name="logo">
         <br>
