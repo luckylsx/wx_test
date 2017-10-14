@@ -167,7 +167,7 @@ class Api extends CI_Controller
                             $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
                             echo $resultStr;
                             break;
-                        }else if(preg_match("/^[1-9](\d){0,2}$/",$keyword)){
+                       }else if(preg_match('/^[1-9](\d){0,2}$/',$keyword)){
                             if ($keyword=='1'){
                                 $desc = "那英-默";
                             }else if ($keyword=='2'){
@@ -192,8 +192,7 @@ class Api extends CI_Controller
                             $musicUrl = "http://wx-test.lylucky.com/mp3/{$desc}.mp3";
                             $resultStr = sprintf($musicTpl, $fromUsername, $toUsername, $time,$desc,$musicUrl,$musicUrl);
                             echo $resultStr;
-                         }
-                    }
+                       }
                 }else{
                     echo "说点什么吧...";
                     exit;
