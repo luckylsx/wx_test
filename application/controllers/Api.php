@@ -170,13 +170,13 @@ class Api extends CI_Controller
                             break;
                         case preg_match('/^[1-9](\d){0,2}$/',$keyword):
                             if ($keyword=='1'){
-                                $desc = "那英 - 默";
+                                $desc = "那英-默";
                             }elseif ($keyword=='2'){
-                                $desc = "G.E.M. 邓紫棋 - 喜欢你";
+                                $desc = "G.M.E.喜欢你";
                             }elseif ($keyword=='3'){
-                                $desc = "G.E.M. 邓紫棋 - 泡沫";
+                                $desc = "G.M.E.泡沫";
                             }else{
-                                $desc = "那英 - 默";
+                                $desc = "那英-默";
                             }
                             $musicTpl = '<xml>
                                         <ToUserName><![CDATA[%s]]></ToUserName>
