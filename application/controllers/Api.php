@@ -201,13 +201,9 @@ class Api extends CI_Controller
                            echo $resultStr;
                        }else{
                            $url = "http://www.tuling123.com/openapi/api";
-                           $data = [
-                               "key"=>"7aa2a54501124c25b9dd833735cf7605",
-                                "info"=> $keyword,
-                                "userid" => $fromUsername
-                           ];
+                           $data = "key=7aa2a54501124c25b9dd833735cf7605&info=".urlencode($keyword)."&userid={$fromUsername}";
                            $re = http_post($url,$data);
-                           $contentStr = $re->text;
+                           $contentStr = json_decode($re)->text;
                            $msgType = 'text';
                            $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
                            echo $resultStr;
@@ -282,7 +278,10 @@ class Api extends CI_Controller
         $d = $this->news->getNewslist();
         $a='CXWZ北京';
         preg_match('/^CXWZ([\X{4e00}-\x{9fa5}]+)/ui',$a,$res);
-        var_dump($res);
+        $url = "http://www.tuling123.com/openapi/api";
+        $data = "key=7aa2a54501124c25b9dd833735cf7605&info=".urlencode("你好")."&userid=1234";
+        $re = http_post($url,$data);
+        var_dump($re);
         die;
         echo "<pre>";
         print_r($d);
