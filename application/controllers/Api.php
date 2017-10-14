@@ -195,7 +195,7 @@ class Api extends CI_Controller
                        }else if (preg_match('/^CXWZ([\x{4e00}-\x{9fa5}]+)/ui',$keyword,$res)){
                            $this->load->model("Location_model",'location');
                            $d = $this->location->getLocation($fromUsername);
-                           $contentStr = "http://api.map.baidu.com/place/search?query=".urlencode($res[1])."&location={$d['longitude']},{$d['latitude']}&radius=1000&region=上海&output=html&coord_type=bd09";
+                           $contentStr = "http://api.map.baidu.com/place/search?query=".urlencode($res[1])."&location={$d['longitude']},{$d['latitude']}&radius=1000&output=html&coord_type=bd09";
                            $msgType = 'text';
                            $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
                            echo $resultStr;
