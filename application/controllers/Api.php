@@ -7,6 +7,12 @@ class Api extends CI_Controller
 {
     //定义token
     const TOKEN = "luckylsx";
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->helper("url");
+    }
     public function index()
     {
         //$wechatObj = new wechatCallbackapiTest();
@@ -193,7 +199,7 @@ class Api extends CI_Controller
         $description2 = "iPhone8售价跌破五千，黄牛血亏，曾经苹果的辉煌将不复存在";
         $picurl2 = base_url().'uploads/image/2.jpg';
         $url2 = "www.news.qq.com";
-        $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $title1, $description1,$picurl1,$url1,$title2,
+        $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $title1,$description1,$picurl1,$url1,$title2,
         $description2,$picurl2,$url2);
         echo $resultStr;
     }
