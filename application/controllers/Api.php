@@ -47,11 +47,12 @@ class Api extends CI_Controller
 							<Content><![CDATA[%s]]></Content>
 							<FuncFlag>0</FuncFlag>
 							</xml>";
-            if(!empty( $keyword ))
+            $this->backMsg($postObj,$keyword,$fromUsername,$toUsername,$time,$textTpl);
+            /*if(!empty( $keyword ))
             {
                 $contentStr = "Welcome to wechat world!";
                 $this->backMsg($postObj,$keyword,$fromUsername,$toUsername,$time,$textTpl);
-                /*switch ($postObj->MsgType){
+                switch ($postObj->MsgType){
                     case 'event';
                         if ($postObj->Event=='subscribe'){
                             $msgType = "text";
@@ -77,10 +78,10 @@ class Api extends CI_Controller
                         echo $resultStr;
                     default:
                         break;
-                }*/
+                }
             }else{
                 echo "Input something...";
-            }
+            }*/
 
         }else {
             echo "";
@@ -134,19 +135,27 @@ class Api extends CI_Controller
                 }
                 break;
             case 'text':
-                switch ($keyword){
-                    case '1':
-                        $contentStr = "今天天气很好...";
-                        break;
-                    case '2':
-                        $contentStr = "每天学习一点，你越牛逼就有越多的人尊重你！";
-                        break;
-                    default:
-                        break;
+                if (!empty($keyword)){
+                    switch ($keyword){
+                        case '1':
+                            $contentStr = "今天天气很好...";
+                            $msgType = 'text';
+                            $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
+                            echo $resultStr;
+                            break;
+                        case '2':
+                            $contentStr = "每天学习一点，你越牛逼就有越多的人尊重你！";
+                            $msgType = 'text';
+                            $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
+                            echo $resultStr;
+                            break;
+                        default:
+                            break;
+                    }
+                }else{
+                    echo "说点什么吧...";
+                    exit;
                 }
-                $msgType = 'text';
-                $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
-                echo $resultStr;
             default:
                 break;
         }
