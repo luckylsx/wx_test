@@ -157,6 +157,12 @@ class Api extends CI_Controller
                         case '新闻':
                             $this->backNews($fromUsername,$toUsername,$time);
                             break;
+                        case '音乐':
+                            $contentStr = '欢迎来到php自学开发在线音乐点播教程\n\r歌曲列表如下：\n\r 1、周杰伦-告白气球 \n\r 2、汪峰-北京 \n\r 3、那英-默';
+                            $msgType = 'text';
+                            $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
+                            echo $resultStr;
+                            break;
                         default:
                             break;
                     }
