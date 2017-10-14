@@ -191,7 +191,7 @@ class Api extends CI_Controller
                                         </Music>
                                         </xml>
                                         ';
-                            $musicUrl = "http://wx-test.lylucky.com/mp3{$desc}.mp3";
+                            $musicUrl = "http://wx-test.lylucky.com/mp3/{$desc}.mp3";
                             $resultStr = sprintf($musicTpl, $fromUsername, $toUsername, $time,$desc,$musicUrl,$musicUrl);
                             echo $resultStr;
                             break;
