@@ -162,7 +162,7 @@ class Api extends CI_Controller
                             $this->backNews($fromUsername,$toUsername,$time);
                             break;
                         }else if($keyword=='音乐'){
-                            $contentStr = "欢迎来到php自学开发在线音乐点播教程\n\r歌曲列表如下：\n\r 1、周杰伦-告白气球 \n\r 2、汪峰-北京 \n\r 3、那英-默";
+                            $contentStr = "欢迎来到php自学开发在线音乐点播教程\n\r歌曲列表如下：\n\r 1、那英-默 \n\r 2、G.M.E.喜欢你 \n\r 3、G.M.E.泡沫";
                             $msgType = 'text';
                             $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
                             echo $resultStr;
@@ -192,6 +192,11 @@ class Api extends CI_Controller
                             $musicUrl = "http://wx-test.lylucky.com/mp3/{$desc}.mp3";
                             $resultStr = sprintf($musicTpl, $fromUsername, $toUsername, $time,$desc,$musicUrl,$musicUrl);
                             echo $resultStr;
+                       }else{
+                           $contentStr = "输入格式有误，请重新输入";
+                           $msgType = 'text';
+                           $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
+                           echo $resultStr;
                        }
                 }else{
                     echo "说点什么吧...";
