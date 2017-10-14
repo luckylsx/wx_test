@@ -146,34 +146,33 @@ class Api extends CI_Controller
                 break;
             case 'text':
                 if (!empty($keyword)){
-                    switch ($keyword){
-                        case '天气':
+                       if($keyword=='天气'){
                             $contentStr = "今天天气很好...";
                             $msgType = 'text';
                             $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
                             echo $resultStr;
                             break;
-                        case '说':
+                        }else if($keyword=='说'){
                             $contentStr = "每天学习一点，你越牛逼就有越多的人尊重你！";
                             $msgType = 'text';
                             $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
                             echo $resultStr;
                             break;
-                        case '新闻':
+                        }else if($keyword=='新闻'){
                             $this->backNews($fromUsername,$toUsername,$time);
                             break;
-                        case '音乐':
+                        }else if($keyword=='音乐'){
                             $contentStr = "欢迎来到php自学开发在线音乐点播教程\n\r歌曲列表如下：\n\r 1、周杰伦-告白气球 \n\r 2、汪峰-北京 \n\r 3、那英-默";
                             $msgType = 'text';
                             $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
                             echo $resultStr;
                             break;
-                        case preg_match('/^[1-9](\d){0,2}$/',$keyword):
+                        }else if(preg_match("/^[1-9](\d){0,2}$/",$keyword)){
                             if ($keyword=='1'){
                                 $desc = "那英-默";
-                            }elseif ($keyword=='2'){
+                            }else if ($keyword=='2'){
                                 $desc = "G.M.E.喜欢你";
-                            }elseif ($keyword=='3'){
+                            }else if ($keyword=='3'){
                                 $desc = "G.M.E.泡沫";
                             }else{
                                 $desc = "那英-默";
@@ -189,14 +188,11 @@ class Api extends CI_Controller
                                         <MusicUrl><![CDATA[%s]]></MusicUrl>
                                         <HQMusicUrl><![CDATA[%s]]></HQMusicUrl>
                                         </Music>
-                                        </xml>
-                                        ';
+                                        </xml>';
                             $musicUrl = "http://wx-test.lylucky.com/mp3/{$desc}.mp3";
                             $resultStr = sprintf($musicTpl, $fromUsername, $toUsername, $time,$desc,$musicUrl,$musicUrl);
                             echo $resultStr;
-                            break;
-                        default:
-                            break;
+                         }
                     }
                 }else{
                     echo "说点什么吧...";
