@@ -169,13 +169,15 @@ class Api extends CI_Controller
         }
     }
     protected function backNews($fromUsername,$toUsername,$time)
+    //public function backNews()
     {
+        //$fromUsername=1;$toUsername=2;$time=time();
         $textTplHeader = '<xml>
                     <ToUserName><![CDATA[%s]]></ToUserName>
                     <FromUserName><![CDATA[%s]]></FromUserName>
                     <CreateTime>%s</CreateTime>
                     <MsgType><![CDATA[news]]></MsgType>
-                    <ArticleCount>2</ArticleCount>
+                    <ArticleCount>%d</ArticleCount>
                     <Articles>';
         $textTplItem = '<item>
                     <Title><![CDATA[%s]]></Title> 
@@ -191,7 +193,7 @@ class Api extends CI_Controller
         foreach ($d as $item) {
             $textItem .= sprintf($textTplItem,$item['title'],$item['description'],$item['picUrl'],$item['url']);
         }
-        $textHeader = sprintf($textTplHeader,$fromUsername,$toUsername,$time);
+        $textHeader = sprintf($textTplHeader,$fromUsername,$toUsername,$time,count($item));
         $resultStr = $textHeader . $textItem . $textTplFoot;
         /*$title1 = "今日新闻一...";
         $description1 = "华为手机国庆后价格暴跌，这4款旗舰跌至“白菜价”！";

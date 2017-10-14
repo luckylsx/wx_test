@@ -79,6 +79,7 @@ $db['default'] = array(
 //	'hostname' => 'localhost',
 	'username' => 'root',
 	'password' => 'luckyroot',
+//	'password' => '',
 	'database' => 'wxdb',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',

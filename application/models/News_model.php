@@ -10,7 +10,7 @@ class News_model extends CI_Model
      */
     public function getNewslist()
     {
-        $data = $this->db->select('title,description,picUrl,url')->limit(10)
+        $data = $this->db->select('title,description,picUrl,url')->limit(8)
             ->order_by('id','asc')->get("newsImages")->result_array();
         return $data;
     }
