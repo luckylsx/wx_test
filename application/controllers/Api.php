@@ -207,10 +207,15 @@ class Api extends CI_Controller
                 $location_Y = $postObj->Location_Y;
                 $location_X = $postObj->Location_X;
                 $msgType = 'text';
-                $contentStr = "您好！已经收到您上传的地理位置信息。\n\r 经度是:{$location_Y} \n\r 维度是:{$location_X}
-                输入您关心的地方，即可查看其最近的位置信息！";
+                $contentStr = "您好！已经收到您上传的地理位置信息。\n\r 经度是:{$location_Y} \n\r 维度是:{$location_X} \n\r 输入您关心的地方，即可查看其最近的位置信息！";
                 $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
                 echo $resultStr;
+                $data = [
+                    'longitude'=> $location_Y,
+                    'latitude' => $location_X
+                ];
+                $this->load->model("Location_model",'location');
+                $this->location->saveLocation($data,$fromUsername);
                 break;
             default:
                 break;
