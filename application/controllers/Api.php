@@ -193,11 +193,11 @@ class Api extends CI_Controller
                     </xml>';
         $title1 = "今日新闻一...";
         $description1 = "华为手机国庆后价格暴跌，这4款旗舰跌至“白菜价”！";
-        $picurl1 = base_url().'uploads/image/1.jpg';
+        $picurl1 ='http://wx-test.lylucky.com/uploads/image/1.jpg';
         $url1 = "www.news.baidu.com";
         $title2 = "今日新闻二...";
         $description2 = "iPhone8售价跌破五千，黄牛血亏，曾经苹果的辉煌将不复存在";
-        $picurl2 = base_url().'uploads/image/2.jpg';
+        $picurl2 = 'http://wx-test.lylucky.com/uploads/image/2.jpg';
         $url2 = "www.news.qq.com";
         $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $title1,$description1,$picurl1,$url1,$title2,
         $description2,$picurl2,$url2);
