@@ -170,28 +170,29 @@ class Api extends CI_Controller
     }
     protected function backNews($fromUsername,$toUsername,$time)
     {
-        $textTpl = '<xml>
+        $textTplHeader = '<xml>
                     <ToUserName><![CDATA[%s]]></ToUserName>
                     <FromUserName><![CDATA[%s]]></FromUserName>
                     <CreateTime>%s</CreateTime>
                     <MsgType><![CDATA[news]]></MsgType>
                     <ArticleCount>2</ArticleCount>
-                    <Articles>
-                    <item>
+                    <Articles>';
+        $textTplItem = '<item>
                     <Title><![CDATA[%s]]></Title> 
                     <Description><![CDATA[%s]]></Description>
                     <PicUrl><![CDATA[%s]]></PicUrl>
                     <Url><![CDATA[%s]]></Url>
-                    </item>
-                    <item>
-                    <Title><![CDATA[%s]]></Title>
-                    <Description><![CDATA[%s]]></Description>
-                    <PicUrl><![CDATA[%s]]></PicUrl>
-                    <Url><![CDATA[%s]]></Url>
-                    </item>
-                    </Articles>
+                    </item>';
+        $textTplFoot = '</Articles>
                     </xml>';
-        $title1 = "今日新闻一...";
+        $this->load->model("news_model",'news');
+        $d = $this->news->getNewslist();
+        foreach ($d as $item) {
+            $item .= sprintf($textTplItem,$item['title'],$item['description'],$item['picUrl'],$item['url']);
+        }
+        $textHeader = sprintf($textTplHeader,$fromUsername,$toUsername,$time);
+        $resultStr = $textHeader . $item . $textTplFoot;
+        /*$title1 = "今日新闻一...";
         $description1 = "华为手机国庆后价格暴跌，这4款旗舰跌至“白菜价”！";
         $picurl1 ='http://wx-test.lylucky.com/uploads/image/1.jpg';
         $url1 = "www.news.baidu.com";
@@ -199,8 +200,17 @@ class Api extends CI_Controller
         $description2 = "iPhone8售价跌破五千，黄牛血亏，曾经苹果的辉煌将不复存在";
         $picurl2 = 'http://wx-test.lylucky.com/uploads/image/2.jpg';
         $url2 = "www.news.qq.com";
-        $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $title1,$description1,$picurl1,$url1,$title2,
-        $description2,$picurl2,$url2);
+        $resultStr = sprintf($textTplFoot, $fromUsername, $toUsername, $time, $title1,$description1,$picurl1,$url1,$title2,
+        $description2,$picurl2,$url2);*/
         echo $resultStr;
+    }
+
+    public function test()
+    {
+        $this->load->model("news_model",'news');
+        $d = $this->news->getNewslist();
+        echo "<pre>";
+        print_r($d);
+        echo "</pre>";
     }
 }
