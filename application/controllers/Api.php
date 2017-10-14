@@ -187,11 +187,12 @@ class Api extends CI_Controller
                     </xml>';
         $this->load->model("news_model",'news');
         $d = $this->news->getNewslist();
+        $textItem = '';
         foreach ($d as $item) {
-            $item .= sprintf($textTplItem,$item['title'],$item['description'],$item['picUrl'],$item['url']);
+            $textItem .= sprintf($textTplItem,$item['title'],$item['description'],$item['picUrl'],$item['url']);
         }
         $textHeader = sprintf($textTplHeader,$fromUsername,$toUsername,$time);
-        $resultStr = $textHeader . $item . $textTplFoot;
+        $resultStr = $textHeader . $textItem . $textTplFoot;
         /*$title1 = "今日新闻一...";
         $description1 = "华为手机国庆后价格暴跌，这4款旗舰跌至“白菜价”！";
         $picurl1 ='http://wx-test.lylucky.com/uploads/image/1.jpg';
