@@ -110,6 +110,7 @@ class Wxdevelop extends CI_Controller
         $logo = json_decode($upStatus,true);
         $logo_url = $logo['url'];
         $card_id = $this->create_card($access_token,$logo_url);
+        $this->set_w($access_token);
         $this->send_card($access_token,$card_id);
     }
     public function create_card($access_token,$logo_url)
@@ -133,9 +134,7 @@ class Wxdevelop extends CI_Controller
         "card_id":'.$card_id.'
         }';*/
         $wxcardTpl = '{
-           "touser":[
-            "%s"
-           ],
+           "touser":["%s"],
             "wxcard": {"card_id":"%s"}
             "msgtype":"wxcard"
         }';
@@ -152,6 +151,20 @@ class Wxdevelop extends CI_Controller
         echo time();
         echo "<br>";
         echo strtotime("+3 days");
+    }
+
+    public function set_w($access_token)
+    {
+        $url = "URL:https://api.weixin.qq.com/card/testwhitelist/set?access_token={$access_token}";
+        $tpl = '{
+                  "openid": ["%s"],
+                  "username": ["%s"]
+                 }';
+        $data = sprintf($tpl,"o1eypwn9DxGuI7iB2yk0xTrp5OUw","limuz888");
+        $as = http_post($url,$data);
+        $a = json_decode($as,true);
+        var_dump($a);
+
     }
 
 
