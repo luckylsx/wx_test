@@ -8,11 +8,11 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="<?php echo site_url('Create_Card/upload_logo') ?>" method="post" enctype="multipart/form-data">
+    <form action="<?php echo site_url('Wxdevelop/upload') ?>" method="post" enctype="multipart/form-data">
         <h3>上传卡券logo</h3>
         选择图片：<input type="file" name="logo">
         <br>
-        <input type="submit" value="提交">
+        <input type="submit" value="制作卡券">
     </form>
 </body>
 </html>
