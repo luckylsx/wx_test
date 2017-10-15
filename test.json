@@ -14,8 +14,8 @@
         "source": "灌灌灌",
         "date_info": {
           "type":"DATE_TYPE_FIX_TIME_RANGE",
-          "begin_timestamp": 1437549651,
-          "end_timestamp": 1437569651
+          "begin_timestamp": 1508072471,
+          "end_timestamp": 1508331671
         },
         "sku": {
           "quantity": 50000000
