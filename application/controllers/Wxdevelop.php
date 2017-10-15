@@ -75,7 +75,6 @@ class Wxdevelop extends CI_Controller
     public function test()
     {
         echo time()+strtotime(date('Y-m-d',strtotime('+1 day')));
-
     }
 
     public function show()
@@ -99,8 +98,7 @@ class Wxdevelop extends CI_Controller
             $error = array('error' => $this->upload->display_errors());
             var_dump($error);
 //            $this->load->view('upload_form', $error);
-        }else
-        {
+        }else{
             $data = array('upload_data' => $this->upload->data());
         }
         //var_dump($data);
