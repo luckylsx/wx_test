@@ -129,10 +129,18 @@ class Wxdevelop extends CI_Controller
     public function send_card($access_token,$card_id)
     {
         $url="https://api.weixin.qq.com/card/mpnews/gethtml?access_token={$access_token}";
-        $data = '{
+        /*$data = '{
         "card_id":'.$card_id.'
+        }';*/
+        $wxcardTpl = '{
+           "touser":[
+            "%s"
+           ],
+            "wxcard": {"card_id":"%s"}
+            "msgtype":"wxcard"
         }';
-        $status = http_post($url,$data);
+        $wxcard = sprintf($wxcardTpl,'o1eypwn9DxGuI7iB2yk0xTrp5OUw',$card_id);
+        $status = http_post($url,$wxcard);
         $d = json_decode($status,true);
         var_dump($d);
 
