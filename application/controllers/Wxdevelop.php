@@ -109,7 +109,8 @@ class Wxdevelop extends CI_Controller
         $upStatus = http_post($url,$file);
         $logo = json_decode($upStatus,true);
         $logo_url = $logo['url'];
-        $this->create_card($access_token,$logo_url);
+        $card_id = $this->create_card($access_token,$logo_url);
+        $this->send_card($access_token,$card_id);
     }
     public function create_card($access_token,$logo_url)
     {
@@ -117,9 +118,24 @@ class Wxdevelop extends CI_Controller
         $bodyTpl =file_get_contents("test.json");
         $body = sprintf($bodyTpl,$logo_url);
         $status = http_post($url,$body);
-        echo "<pre>";
-        var_dump($status);
-        echo "</pre>";
+        $card = json_decode($status,true);
+        $card_id = $card['card_id'];
+        return $card_id;
+//        echo "<pre>";
+//        var_dump($status);
+//        echo "</pre>";
+
+    }
+    public function send_card($access_token,$card_id)
+    {
+        $url="https://api.weixin.qq.com/card/mpnews/gethtml?access_token={$access_token}";
+        $data = '{
+        "card_id":'.$card_id.'
+        }';
+        $status = http_post($url,$data);
+        $d = json_decode($status,true);
+        var_dump($d);
+
 
     }
 
