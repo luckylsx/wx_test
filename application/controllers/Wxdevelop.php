@@ -39,6 +39,7 @@ class Wxdevelop extends CI_Controller
         );
         $tokenData = file_get_contents($url,false,stream_context_create($arrContextOptions));
         $token = json_decode($tokenData,true);
+        var_dump($token);
         $access_token = $this->cache->save($key, $token['access_token'], 1.5*60*60);
         return $access_token;
     }
