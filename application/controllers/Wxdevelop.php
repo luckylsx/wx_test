@@ -26,6 +26,7 @@ class Wxdevelop extends CI_Controller
         //access_token未过期
         if ($access_token = $this->cache->get($key))
         {
+
             return $access_token;
 
         }
@@ -41,7 +42,7 @@ class Wxdevelop extends CI_Controller
         $token = json_decode($tokenData,true);
         var_dump($token);
         $access_token = $this->cache->save($key, $token['access_token'], 1.5*60*60);
-        return $access_token;
+	return $access_token;
     }
 
     public function uploadLogo()
