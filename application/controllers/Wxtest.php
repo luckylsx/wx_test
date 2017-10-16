@@ -45,6 +45,7 @@ class Wxtest extends CI_Controller
             $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
             $fromUsername = $postObj->FromUserName;
             $toUsername = $postObj->ToUserName;
+            $event = $postObj->Event;
             $keyword = trim($postObj->Content);
             $time = time();
             $textTpl = "<xml>
@@ -118,13 +119,13 @@ class Wxtest extends CI_Controller
             return false;
         }
     }
-    protected function backMsg($postObj,$keyword,$fromUsername,$toUsername,$time,$textTpl)
+    protected function backMsg($postObj,$keyword,$fromUsername,$toUsername,$time,$textTpl,$event)
     {
         $contentStr = "Welcome to wechat world!";
         switch ($postObj->MsgType){
             case 'event':
                 $this->logger($postObj->Event);
-                if ($postObj->Event=='subscribe'){
+                if ($event == 'subscribe'){
                     $msgType = "text";
                     $contentStr = "欢迎订阅php自学开发！\n\r 每天进步一点，小学习大成就!请持续关注php自学开发。
                     回复以下内容有你想要的：
@@ -134,7 +135,7 @@ class Wxtest extends CI_Controller
                     4:回复引入查看音乐列表 回复相应列表数字 听音乐";
                     $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
                     echo $resultStr;
-                }else if ($postObj->Event=='TEMPLATESENDJOBFINISH'){
+                }else if ($event == 'TEMPLATESENDJOBFINISH'){
                     $msgType = "text";
                     if ($postObj->Status=='success'){
                         $contentStr = "用户接收成功";
