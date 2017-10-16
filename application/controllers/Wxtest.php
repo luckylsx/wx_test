@@ -7,8 +7,14 @@ class Wxtest extends CI_Controller
 {
     //定义token
     const TOKEN = "luckylsx";
+    //测试
     const APPID = 'wx3f2070ceecbb4b40';
+    //订阅号
+    //const APPID = 'wxfbce10c1ed40ade0';
+    //测试
     const APPSECRET = '0cc0e0e4bcac4049ac0e0308ddf8c320';
+    //订阅号
+    //const APPSECRET = 'aa6d1ff646c282ca7529cc3690eb054b';
 
     public function __construct()
     {
@@ -56,7 +62,7 @@ class Wxtest extends CI_Controller
 							<Content><![CDATA[%s]]></Content>
 							<FuncFlag>0</FuncFlag>
 							</xml>";
-            $this->backMsg($postObj,$keyword,$fromUsername,$toUsername,$time,$textTpl);
+            $this->backMsg($postObj,$keyword,$fromUsername,$toUsername,$time,$textTpl,$event);
             /*if(!empty( $keyword ))
             {
                 $contentStr = "Welcome to wechat world!";
@@ -124,7 +130,6 @@ class Wxtest extends CI_Controller
         $contentStr = "Welcome to wechat world!";
         switch ($postObj->MsgType){
             case 'event':
-                $this->logger($postObj->Event);
                 if ($event == 'subscribe'){
                     $msgType = "text";
                     $contentStr = "欢迎订阅php自学开发！\n\r 每天进步一点，小学习大成就!请持续关注php自学开发。
@@ -335,6 +340,7 @@ class Wxtest extends CI_Controller
         );
         $d = file_get_contents($url,false,stream_context_create($arrContextOptions));
         $template = json_decode($d,true);
+        var_dump($template);
         if ($template){
             return $template['template_list'];
         }else{

@@ -139,7 +139,8 @@ class Api extends CI_Controller
                     1:回复'天气'查看天气查询
                     2:回复'说'查看我想对你说...
                     3:回复新闻，查看今日新闻
-                    4:回复引入查看音乐列表 回复相应列表数字 听音乐";
+                    4:回复引入查看音乐列表 回复相应列表数字 听音乐
+                    5:上传你的位置，有更多惊喜...";
                     $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
                     echo $resultStr;
                 }
@@ -217,7 +218,8 @@ class Api extends CI_Controller
                 $location_Y = $postObj->Location_Y;
                 $location_X = $postObj->Location_X;
                 $msgType = 'text';
-                $contentStr = "您好！已经收到您上传的地理位置信息。\n\r 经度是:{$location_Y} \n\r 维度是:{$location_X} \n\r 输入您关心的地方，即可查看其最近的位置信息！";
+                $contentStr = "您好！已经收到您上传的地理位置信息。\n\r 经度是:{$location_Y} \n\r 维度是:{$location_X}
+                输入\"CXWZ位置\"，如：\"CXWZ肯德基\",即可查看该店最近的位置信息！";
                 $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
                 echo $resultStr;
                 $data = [
