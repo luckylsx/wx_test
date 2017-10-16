@@ -135,11 +135,12 @@ class Wxtest extends CI_Controller
                     echo $resultStr;
                 }else if ($postObj->Event=='TEMPLATESENDJOBFINISH'){
                     $msgType = "text";
-                    if ($postObj->Status=='success'){
+                    $contentStr = "用户接收成功";
+                    /*if ($postObj->Status=='success'){
                         $contentStr = "用户接收成功";
                     }else{
                         $contentStr = "用户接收失败";
-                    }
+                    }*/
                     $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
                     echo $resultStr;
                 }
