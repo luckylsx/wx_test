@@ -135,11 +135,11 @@ class Wxdevelop extends CI_Controller
         "card_id":'.$card_id.'
         }';*/
         $wxcardTpl = '{
-           "touser":["%s"],
+           "touser":["%s","%s"],
             "wxcard": {"card_id":"%s"}
             "msgtype":"wxcard"
         }';
-        $wxcard = sprintf($wxcardTpl,'o1eypwn9DxGuI7iB2yk0xTrp5OUw',$card_id);
+        $wxcard = sprintf($wxcardTpl,'o1eypwn9DxGuI7iB2yk0xTrp5OUw',"o1eypwpEdZ3V4iHSaSNN797lto88",$card_id);
         $status = http_post($url,$wxcard);
         $d = json_decode($status,true);
         var_dump($d);
@@ -159,13 +159,13 @@ class Wxdevelop extends CI_Controller
         $access_token = "dOuthgemJvJLoZcB-NshRlMMifa0Qhr3lfgyRBZk1Il6kymQl5PjAJB8J8lzXKrMmJ2qOg2ClGiSlw1Zsq-I6rmXWn8MxFlGVvwoAiSgAEZAprpPv2cLyqQsIIQ9ALuDBLEeAGAMWP";
         $url = "https://api.weixin.qq.com/card/testwhitelist/set?access_token={$access_token}";
         $tpl = '{
-        "openid": ["%s"],
-        "username": ["%s"]
+        "openid": ["%s","%s"],
+        "username": ["%s","%s"]
         }';
-        $data = sprintf($tpl,"o1eypwn9DxGuI7iB2yk0xTrp5OUw","limuz888");
+        $data = sprintf($tpl,"o1eypwn9DxGuI7iB2yk0xTrp5OUw","o1eypwpEdZ3V4iHSaSNN797lto88","limuz888","wxid_1tjpaqbb2sqv22");
         $as = http_post($url,$data);
         $a = json_decode($as,true);
-        var_dump($a);
+        //var_dump($a);
 
     }
 
