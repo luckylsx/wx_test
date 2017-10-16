@@ -139,7 +139,7 @@ class Wxdevelop extends CI_Controller
 
         $wxcardTpl = '{ 
                         "touser":["%s","%s"], 
-                         "wxcard":"card_id":"%s",
+                         "wxcard":{"card_id":"%s"},
                          "msgtype":"wxcard" 
                       }';
         //"o1eypwpEdZ3V4iHSaSNN797lto88"
