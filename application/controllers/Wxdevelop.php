@@ -131,7 +131,7 @@ class Wxdevelop extends CI_Controller
     }
     public function send_card($access_token,$card_id)
     {
-        $url="https://api.weixin.qq.com/cgi-bin/message/mass/send?access_token=?access_token={$access_token}";
+        $url="https://api.weixin.qq.com/cgi-bin/message/mass/send?access_token={$access_token}";
         /*$data = '{
         "card_id":'.$card_id.'
         }';*/
@@ -140,7 +140,7 @@ class Wxdevelop extends CI_Controller
                         "%s",
                         "%s"
                        ],
-                            "wxcard": {"card_id":"%s"}
+                            "wxcard": {"card_id":"%s"},
                             "msgtype":"wxcard"
                     }';
         //$wxcardTpl = file_get_contents('card.json');
