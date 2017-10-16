@@ -123,7 +123,7 @@ class Wxtest extends CI_Controller
         $contentStr = "Welcome to wechat world!";
         switch ($postObj->MsgType){
             case 'event';
-            $this->logger($postObj->Event);
+                $this->logger($postObj->Event);
                 if ($postObj->Event=='subscribe'){
                     $msgType = "text";
                     $contentStr = "欢迎订阅php自学开发！\n\r 每天进步一点，小学习大成就!请持续关注php自学开发。
@@ -134,18 +134,19 @@ class Wxtest extends CI_Controller
                     4:回复引入查看音乐列表 回复相应列表数字 听音乐";
                     $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
                     echo $resultStr;
-                }else if ($postObj->Event=='TEMPLATESENDJOBFINISH'){
+                }
+                /*else if ($postObj->Event=='TEMPLATESENDJOBFINISH'){
 
                     $msgType = "text";
                     $contentStr = "用户接收成功";
-                    /*if ($postObj->Status=='success'){
+                    if ($postObj->Status=='success'){
                         $contentStr = "用户接收成功";
                     }else{
                         $contentStr = "用户接收失败";
-                    }*/
+                    }
                     $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
                     echo $resultStr;
-                }
+                }*/
                 break;
             case 'text':
                 if (!empty($keyword)){
@@ -362,7 +363,6 @@ class Wxtest extends CI_Controller
        }';
         $template = $this->gettemplatelist($access_token);
         if (!$template){
-            echo 113;
             return "消息模板列表获取失败";
         }
         $tmp = $template[0];
@@ -372,8 +372,8 @@ class Wxtest extends CI_Controller
         $d = http_post($send_url,$contentStr);
         $status = json_decode($d,true);
         $this->load->helper("array");
-        if (element('errcode',$status)){
-            echo "发送成功！";
+        if (element('errcode',$status)==0){
+            $this->logger("模板消息发送成功！");
         }
     }
     public function logger($content)
