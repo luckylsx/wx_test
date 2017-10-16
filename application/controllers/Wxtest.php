@@ -133,7 +133,7 @@ class Wxtest extends CI_Controller
                     4:回复引入查看音乐列表 回复相应列表数字 听音乐";
                     $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
                     echo $resultStr;
-                }elseif ($postObj->Event=='TEMPLATESENDJOBFINISH'){
+                }else if ($postObj->Event=='TEMPLATESENDJOBFINISH'){
                     $msgType = "text";
                     if ($postObj->Status=='success'){
                         $contentStr = "用户接收成功";
@@ -368,6 +368,7 @@ class Wxtest extends CI_Controller
         $send_url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token={$access_token}";
         $d = http_post($send_url,$contentStr);
         $status = json_decode($d,true);
+        $this->load->helper("array");
         if (element('errcode',$status)){
             echo "发送成功！";
         }
