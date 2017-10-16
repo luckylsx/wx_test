@@ -122,7 +122,7 @@ class Wxtest extends CI_Controller
     {
         $contentStr = "Welcome to wechat world!";
         switch ($postObj->MsgType){
-            case 'event';
+            case 'event':
                 $this->logger($postObj->Event);
                 if ($postObj->Event=='subscribe'){
                     $msgType = "text";
@@ -134,11 +134,8 @@ class Wxtest extends CI_Controller
                     4:回复引入查看音乐列表 回复相应列表数字 听音乐";
                     $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
                     echo $resultStr;
-                }
-                /*else if ($postObj->Event=='TEMPLATESENDJOBFINISH'){
-
+                }else if ($postObj->Event=='TEMPLATESENDJOBFINISH'){
                     $msgType = "text";
-                    $contentStr = "用户接收成功";
                     if ($postObj->Status=='success'){
                         $contentStr = "用户接收成功";
                     }else{
@@ -146,7 +143,7 @@ class Wxtest extends CI_Controller
                     }
                     $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
                     echo $resultStr;
-                }*/
+                }
                 break;
             case 'text':
                 if (!empty($keyword)){
