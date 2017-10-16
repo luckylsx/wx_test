@@ -121,6 +121,7 @@ class Wxdevelop extends CI_Controller
         $body = sprintf($bodyTpl,$logo_url);
         $status = http_post($url,$body);
         $card = json_decode($status,true);
+        var_dump($card);
         $card_id = $card['card_id'];
         return $card_id;
 //        echo "<pre>";
@@ -135,7 +136,7 @@ class Wxdevelop extends CI_Controller
         "card_id":'.$card_id.'
         }';*/
         $wxcardTpl = file_get_contents('card.json');
-        $wxcard = sprintf($wxcardTpl,'o1eypwn9DxGuI7iB2yk0xTrp5OUw',"o1eypwpEdZ3V4iHSaSNN797lto88",$card_id);
+        $wxcard = sprintf($wxcardTpl,'o1eypwn9DxGuI7iB2yk0xTrp5OUw',$card_id);
         $status = http_post($url,$wxcard);
         $d = json_decode($status,true);
         var_dump($d);

@@ -1,8 +1,13 @@
 {
-  "touser":[
-    "%s",
-    "%s"
-  ],
-  "wxcard": {"card_id":"%s"},
-  "msgtype":"wxcard"
+  "action_name": "QR_CARD",
+  "expire_seconds": 1800,
+  "action_info": {
+    "card": {
+      "card_id": "%s",
+      "code": "198374613512",
+      "openid": "%s",
+      "is_unique_code": false ,
+      "outer_str":"12b"
+    }
+  }
 }
