@@ -303,6 +303,7 @@ class Wxtest extends CI_Controller
         //access_token未过期
         if ($access_token = $this->cache->get($key))
         {
+            echo $access_token;
             return $access_token;
         }
         $this->cache->clean();
@@ -317,6 +318,7 @@ class Wxtest extends CI_Controller
         $tokenData = file_get_contents($url,false,stream_context_create($arrContextOptions));
         $token = json_decode($tokenData,true);
         $access_token = $this->cache->save($key, $token['access_token'], 1.5*60*60);
+        echo $access_token;
         return $access_token;
     }
     /**
