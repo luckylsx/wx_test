@@ -118,17 +118,6 @@ class Wxtest extends CI_Controller
             return false;
         }
     }
-    //获取access_token
-    public function getAccessToken( $appid, $secret ) {
-        $url = "https://api.weixin.qq.com/cgi-bin/token";
-        $data = "grant_type=client_credential" . "&appid=" . $appid  . "&secret=" .  $secret ;
-        $resp = http_post( $url, $data );
-        //截取token
-        $token=strstr( $resp, "\":\"" );
-        $token=trim( $token, "\":\"" );
-        $token=strstr( $token, "\",\"", true );
-        return $token;
-    }
     protected function backMsg($postObj,$keyword,$fromUsername,$toUsername,$time,$textTpl)
     {
         $contentStr = "Welcome to wechat world!";
@@ -305,6 +294,7 @@ class Wxtest extends CI_Controller
         {
             return $access_token;
         }
+        $this->cache->clean();
         //access_token过期重新获取
         $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".self::APPID."&secret=".self::APPSECRET;
         $arrContextOptions=array(
@@ -364,9 +354,11 @@ class Wxtest extends CI_Controller
         }
         $tmp = $template[0];
         $contentStr = sprintf($tempTpl,$oppenid,$tmp['template_id'],$tmp['title'],$tmp['content']);
+        echo $contentStr;
         $send_url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token={$access_token}";
         $d = http_post($send_url,$contentStr);
         $status = json_decode($d,true);
+        var_dump($status);
 
 
     }
