@@ -133,6 +133,15 @@ class Wxtest extends CI_Controller
                     4:回复引入查看音乐列表 回复相应列表数字 听音乐";
                     $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
                     echo $resultStr;
+                }elseif ($postObj->Event=='TEMPLATESENDJOBFINISH'){
+                    $msgType = "text";
+                    if ($postObj->Status=='success'){
+                        $contentStr = "用户接收成功";
+                    }else{
+                        $contentStr = "用户接收失败";
+                    }
+                    $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
+                    echo $resultStr;
                 }
                 break;
             case 'text':
@@ -333,7 +342,7 @@ class Wxtest extends CI_Controller
     public function send_tmp($oppenid)
     {
         $access_token = $this->getAccessToke();
-        $tempTpl = ' {
+        $tempTpl = '{
            "touser":"%s",
            "template_id":"%s",
            "url":"http://www.soso.com",  
@@ -349,7 +358,8 @@ class Wxtest extends CI_Controller
            }
        }';
         $template = $this->gettemplatelist($access_token);
-        if ($template){
+        if (!$template){
+            echo 113;
             return "消息模板列表获取失败";
         }
         $tmp = $template[0];
@@ -358,7 +368,9 @@ class Wxtest extends CI_Controller
         $send_url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token={$access_token}";
         $d = http_post($send_url,$contentStr);
         $status = json_decode($d,true);
-        var_dump($status);
+        if (element('errcode',$status)){
+            echo "发送成功！";
+        }
 
 
     }
