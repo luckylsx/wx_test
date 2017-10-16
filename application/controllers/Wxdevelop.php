@@ -154,13 +154,14 @@ class Wxdevelop extends CI_Controller
         echo strtotime("+3 days");
     }
 
-    public function set_w($access_token)
+    public function set_w()
     {
-        $url = "URL:https://api.weixin.qq.com/card/testwhitelist/set?access_token={$access_token}";
+        $access_token = "dOuthgemJvJLoZcB-NshRlMMifa0Qhr3lfgyRBZk1Il6kymQl5PjAJB8J8lzXKrMmJ2qOg2ClGiSlw1Zsq-I6rmXWn8MxFlGVvwoAiSgAEZAprpPv2cLyqQsIIQ9ALuDBLEeAGAMWP";
+        $url = "https://api.weixin.qq.com/card/testwhitelist/set?access_token={$access_token}";
         $tpl = '{
-                  "openid": ["%s"],
-                  "username": ["%s"]
-                 }';
+        "openid": ["%s"],
+        "username": ["%s"]
+        }';
         $data = sprintf($tpl,"o1eypwn9DxGuI7iB2yk0xTrp5OUw","limuz888");
         $as = http_post($url,$data);
         $a = json_decode($as,true);
