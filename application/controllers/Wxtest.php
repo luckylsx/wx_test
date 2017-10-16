@@ -123,6 +123,7 @@ class Wxtest extends CI_Controller
         $contentStr = "Welcome to wechat world!";
         switch ($postObj->MsgType){
             case 'event';
+            $this->logger($postObj->Event);
                 if ($postObj->Event=='subscribe'){
                     $msgType = "text";
                     $contentStr = "欢迎订阅php自学开发！\n\r 每天进步一点，小学习大成就!请持续关注php自学开发。
@@ -134,6 +135,7 @@ class Wxtest extends CI_Controller
                     $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
                     echo $resultStr;
                 }else if ($postObj->Event=='TEMPLATESENDJOBFINISH'){
+
                     $msgType = "text";
                     $contentStr = "用户接收成功";
                     /*if ($postObj->Status=='success'){
@@ -373,7 +375,14 @@ class Wxtest extends CI_Controller
         if (element('errcode',$status)){
             echo "发送成功！";
         }
-
-
+    }
+    public function logger($content)
+    {
+        $logSize=100000;
+        $log="log.txt";
+        if(file_exists($log) && filesize($log)>$logSize){
+            unlink($log);
+        }
+        file_put_contents($log,date("Y-m-d H:i:s",time())." ".$content."\n",FILE_APPEND);
     }
 }
