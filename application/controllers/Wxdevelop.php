@@ -21,7 +21,7 @@ class Wxdevelop extends CI_Controller
     public function getAccessToke()
     {
         //加载缓存驱动
-        $this->load->driver('cache', array('adapter' => 'redis', 'backup' => 'file'));
+        $this->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file'));
         $key = "lucky_wx_access_token";
         //access_token未过期
         if ($access_token = $this->cache->get($key))
