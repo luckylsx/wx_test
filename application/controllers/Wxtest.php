@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * 微信开发接口配置
  */
-class Api extends CI_Controller
+class Wxtest extends CI_Controller
 {
     //定义token
     const TOKEN = "luckylsx";
