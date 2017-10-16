@@ -1,0 +1,8 @@
+{
+  "touser":[
+    "%s",
+    "%s"
+  ],
+  "wxcard": {"card_id":"%s"},
+  "msgtype":"wxcard"
+}

@@ -134,11 +134,7 @@ class Wxdevelop extends CI_Controller
         /*$data = '{
         "card_id":'.$card_id.'
         }';*/
-        $wxcardTpl = '{
-           "touser":["%s","%s"],
-            "wxcard": {"card_id":"%s"}
-            "msgtype":"wxcard"
-        }';
+        $wxcardTpl = file_get_contents('card.json');
         $wxcard = sprintf($wxcardTpl,'o1eypwn9DxGuI7iB2yk0xTrp5OUw',"o1eypwpEdZ3V4iHSaSNN797lto88",$card_id);
         $status = http_post($url,$wxcard);
         $d = json_decode($status,true);
