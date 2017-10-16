@@ -7,6 +7,8 @@ class Wxtest extends CI_Controller
 {
     //定义token
     const TOKEN = "luckylsx";
+    const APPID = 'wx3f2070ceecbb4b40';
+    const APPSECRET = '0cc0e0e4bcac4049ac0e0308ddf8c320';
 
     public function __construct()
     {
@@ -167,6 +169,9 @@ class Wxtest extends CI_Controller
                         $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
                         echo $resultStr;
                         break;
+                    }else if($keyword=='模板'){
+                        $this->send_tmp($fromUsername);
+                        break;
                     }else if(preg_match('/^[1-9](\d){0,2}$/',$keyword)){
                         if ($keyword=='1'){
                             $desc = "那英-默";
@@ -286,5 +291,83 @@ class Wxtest extends CI_Controller
         echo "<pre>";
         print_r($d);
         echo "</pre>";
+    }
+    /**
+     * 获取accesstoken
+     */
+    public function getAccessToke()
+    {
+        //加载缓存驱动
+        $this->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file'));
+        $key = "lucky_wx_access_token";
+        //access_token未过期
+        if ($access_token = $this->cache->get($key))
+        {
+            return $access_token;
+        }
+        //access_token过期重新获取
+        $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".self::APPID."&secret=".self::APPSECRET;
+        $arrContextOptions=array(
+            "ssl"=>array(
+                "verify_peer"=>false,
+                "verify_peer_name"=>false,
+            ),
+        );
+        $tokenData = file_get_contents($url,false,stream_context_create($arrContextOptions));
+        $token = json_decode($tokenData,true);
+        $access_token = $this->cache->save($key, $token['access_token'], 1.5*60*60);
+        return $access_token;
+    }
+    /**
+     * 获取模板消息列表
+     */
+    public function gettemplatelist($access_token)
+    {
+        $url = "https://api.weixin.qq.com/cgi-bin/template/get_all_private_template?access_token={$access_token}";
+        $arrContextOptions=array(
+            "ssl"=>array(
+                "verify_peer"=>false,
+                "verify_peer_name"=>false,
+            ),
+        );
+        $d = file_get_contents($url,false,stream_context_create($arrContextOptions));
+        $template = json_decode($d,true);
+        if ($template){
+            return $template['template_list'];
+        }else{
+            return false;
+        }
+
+    }
+
+    public function send_tmp($oppenid)
+    {
+        $access_token = $this->getAccessToke();
+        $tempTpl = ' {
+           "touser":"%s",
+           "template_id":"%s",
+           "url":"http://www.soso.com",  
+           "data":{
+                   "first": {
+                       "value":"%s！",
+                       "color":"#173177"
+                   },
+                   "remark":{
+                       "value":"%s！",
+                       "color":"#173177"
+                   }
+           }
+       }';
+        $template = $this->gettemplatelist($access_token);
+        if ($template){
+            return "消息模板列表获取失败";
+        }
+        $tmp = $template[0];
+        $contentStr = sprintf($tempTpl,$oppenid,$tmp['template_id'],$tmp['title'],$tmp['content']);
+        $send_url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token={$access_token}";
+        $d = http_post($send_url,$contentStr);
+        $status = json_decode($d,true);
+
+
     }
 }
