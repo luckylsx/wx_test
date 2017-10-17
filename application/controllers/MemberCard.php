@@ -134,10 +134,10 @@ class MemberCard extends CI_Controller
         {
             $error = array('error' => $this->upload->display_errors());
             var_dump($error);
+            return;
 //            $this->load->view('upload_form', $error);
-        }else{
-            $data = array('upload_data' => $this->upload->data());
         }
+        $data = array('upload_data' => $this->upload->data());
         //var_dump($data);
         $logo_url = $data['upload_data']['full_path'];
         $access_token = $this->getAccessToke();
@@ -148,8 +148,7 @@ class MemberCard extends CI_Controller
         $logo = json_decode($upStatus,true);
         $logo_url = $logo['url'];
         $card_id = $this->create_card($access_token,$logo_url);
-        $this->set_w($access_token);
-        $this->send_card($access_token,$card_id);
+        //$this->send_card($access_token,$card_id);
     }
 
     /**
@@ -165,6 +164,7 @@ class MemberCard extends CI_Controller
         $body = sprintf($bodyTpl,$logo_url);
         $status = http_post($url,$body);
         $card = json_decode($status,true);
+        echo "创建会员卡信息：<br>";
         var_dump($card);
         $card_id = $card['card_id'];
         return $card_id;
@@ -181,7 +181,8 @@ class MemberCard extends CI_Controller
      */
     public function send_card($access_token,$card_id)
     {
-        $url="https://api.weixin.qq.com/cgi-bin/message/mass/send?access_token={$access_token}";
+        $preUrl = "https://api.weixin.qq.com/cgi-bin/message/mass/preview?access_token={$access_token}";
+        //$url="https://api.weixin.qq.com/cgi-bin/message/mass/send?access_token={$access_token}";
         /*$data = '{
         "card_id":'.$card_id.'
         }';*/
@@ -193,8 +194,9 @@ class MemberCard extends CI_Controller
         //"o1eypwpEdZ3V4iHSaSNN797lto88"
         //$wxcardTpl = file_get_contents('card.json');
         $wxcard = sprintf($wxcardTpl,'o1eypwn9DxGuI7iB2yk0xTrp5OUw','o1eypwpEdZ3V4iHSaSNN797lto88',$card_id);
-        $status = http_post($url,$wxcard);
+        $status = http_post($preUrl,$wxcard);
         $d = json_decode($status,true);
+        echo "发送会员卡信息<br>";
         var_dump($d);
     }
 
@@ -203,6 +205,8 @@ class MemberCard extends CI_Controller
      */
     public function getPolist()
     {
+        echo $_SERVER['HTTP_HOST'];
+        die;
         $access_token = $this->getAccessToke();
         $url = "https://api.weixin.qq.com/cgi-bin/poi/getpoilist?access_token={$access_token}";
         $pol = '{
@@ -213,4 +217,5 @@ class MemberCard extends CI_Controller
         $d = json_decode($data,true);
         var_dump($d);
     }
+
 }
