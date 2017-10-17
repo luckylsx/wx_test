@@ -103,9 +103,114 @@ class MemberCard extends CI_Controller
     }
     public function json_response()
     {
-        $data = ["msgtype"=>"end"];
+        echo json_encode(array('msgtype'=>'end'));
+        /*$data = ["msgtype"=>"end"];
         $res = json_encode($data,JSON_UNESCAPED_UNICODE);
-        var_dump($res);
-        return $res;
+        echo $res;
+        return $res;*/
+    }
+    /**
+     * 展示上传页面，上传会员卡logo
+     */
+    public function show()
+    {
+        $this->load->view("upload_logo");
+    }
+    /**
+     * 会员卡上传方法
+     */
+    public function upload()
+    {
+        $config['upload_path']      = './uploads/card_logo/';
+        $config['allowed_types']    = 'gif|jpg|png';
+        $config['max_size']     = 100;
+        $config['max_width']    = 1024;
+        $config['max_height']   = 768;
+        $config['file_name']   = uniqid();
+
+        $this->load->library('upload', $config);
+
+        if ( ! $this->upload->do_upload('logo'))
+        {
+            $error = array('error' => $this->upload->display_errors());
+            var_dump($error);
+//            $this->load->view('upload_form', $error);
+        }else{
+            $data = array('upload_data' => $this->upload->data());
+        }
+        //var_dump($data);
+        $logo_url = $data['upload_data']['full_path'];
+        $access_token = $this->getAccessToke();
+        $url = "https://api.weixin.qq.com/cgi-bin/media/uploadimg?access_token=" .$access_token;
+        $file = array( "buffer"=>new CURLFile($logo_url));
+//        $file['buffer'] =new CURLFile($logo_url);
+        $upStatus = http_post($url,$file);
+        $logo = json_decode($upStatus,true);
+        $logo_url = $logo['url'];
+        $card_id = $this->create_card($access_token,$logo_url);
+        $this->set_w($access_token);
+        $this->send_card($access_token,$card_id);
+    }
+
+    /**
+     * 创建会员卡
+     * @param $access_token
+     * @param $logo_url
+     * @return mixed
+     */
+    public function create_card($access_token,$logo_url)
+    {
+        $url = "https://api.weixin.qq.com/card/create?access_token={$access_token}";
+        $bodyTpl =file_get_contents("test.json");
+        $body = sprintf($bodyTpl,$logo_url);
+        $status = http_post($url,$body);
+        $card = json_decode($status,true);
+        var_dump($card);
+        $card_id = $card['card_id'];
+        return $card_id;
+//        echo "<pre>";
+//        var_dump($status);
+//        echo "</pre>";
+
+    }
+
+    /**
+     * 投放会员卡
+     * @param $access_token
+     * @param $card_id
+     */
+    public function send_card($access_token,$card_id)
+    {
+        $url="https://api.weixin.qq.com/cgi-bin/message/mass/send?access_token={$access_token}";
+        /*$data = '{
+        "card_id":'.$card_id.'
+        }';*/
+        $wxcardTpl = '{ 
+                        "touser":["%s","%s"], 
+                         "wxcard":{"card_id":"%s"},
+                         "msgtype":"wxcard" 
+                      }';
+        //"o1eypwpEdZ3V4iHSaSNN797lto88"
+        //$wxcardTpl = file_get_contents('card.json');
+        $wxcard = sprintf($wxcardTpl,'o1eypwn9DxGuI7iB2yk0xTrp5OUw','o1eypwpEdZ3V4iHSaSNN797lto88',$card_id);
+        $status = http_post($url,$wxcard);
+        $d = json_decode($status,true);
+        var_dump($d);
+    }
+
+    /**
+     * 获取店铺信息
+     */
+    public function getPolist()
+    {
+        $access_token = $this->getAccessToke();
+        $url = "https://api.weixin.qq.com/cgi-bin/poi/getpoilist?access_token={$access_token}";
+        $pol = '{
+                    "begin":0,
+                    "limit":2
+                }';
+        $data = http_post($url,$pol);
+        $d = json_decode($data,true);
+        var_dump($d);
     }
 }
