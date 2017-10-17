@@ -8,7 +8,7 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="<?php echo 'http://wx-test.lylucky.com/index.php/Wxdevelop/upload' ?>" method="post" enctype="multipart/form-data">
+    <form action="<?php echo 'http://wx-test.lylucky.com/index.php/MemberCard/upload' ?>" method="post" enctype="multipart/form-data">
         <h3>上传卡券logo</h3>
         选择图片：<input type="file" name="logo">
         <br>
