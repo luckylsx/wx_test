@@ -304,14 +304,12 @@ class Wxtest extends CI_Controller
     {
         //加载缓存驱动
         $this->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file'));
-        $key = "lucky_wx_access_token";
+        $key = md5(self::APPID . self::APPSECRET);
         //access_token未过期
         if ($access_token = $this->cache->get($key))
         {
-            echo $access_token;
             return $access_token;
         }
-        $this->cache->clean();
         //access_token过期重新获取
         $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".self::APPID."&secret=".self::APPSECRET;
         $arrContextOptions=array(
@@ -322,8 +320,7 @@ class Wxtest extends CI_Controller
         );
         $tokenData = file_get_contents($url,false,stream_context_create($arrContextOptions));
         $token = json_decode($tokenData,true);
-        $access_token = $this->cache->save($key, $token['access_token'], 1.5*60*60);
-        echo $access_token;
+        $access_token = $this->cache->save($key, $token['access_token'], 7000);
         return $access_token;
     }
     /**
@@ -340,7 +337,6 @@ class Wxtest extends CI_Controller
         );
         $d = file_get_contents($url,false,stream_context_create($arrContextOptions));
         $template = json_decode($d,true);
-        var_dump($template);
         if ($template){
             return $template['template_list'];
         }else{
@@ -373,7 +369,6 @@ class Wxtest extends CI_Controller
         }
         $tmp = $template[0];
         $contentStr = sprintf($tempTpl,$oppenid,$tmp['template_id'],$tmp['title'],$tmp['content']);
-        echo $contentStr;
         $send_url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token={$access_token}";
         $d = http_post($send_url,$contentStr);
         $status = json_decode($d,true);

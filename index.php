@@ -56,6 +56,8 @@
 	define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
 	define('APPID', 'wxfbce10c1ed40ade0');
 	define('APPSECRET', 'aa6d1ff646c282ca7529cc3690eb054b');
+	//设置时区
+    date_default_timezone_set("PRC");
 
 /*
  *---------------------------------------------------------------
