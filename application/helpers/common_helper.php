@@ -40,4 +40,12 @@ if (!function_exists('http_post')){
             return ($r['access_token']);
         }
     }
+    if (!function_exists('p')){
+        function p($data){
+            echo "<pre>";
+            print_r($data);
+            echo "</pre>";
+            die;
+        }
+    }
 }

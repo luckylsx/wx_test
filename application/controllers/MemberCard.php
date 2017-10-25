@@ -99,7 +99,24 @@ class MemberCard extends CI_Controller
 
     public function test()
     {
-        echo sha1("limuz888");
+        //$url = "http://php.net/manual/zh/function.pathinfo.php";
+        $url = "http://localhost/study/wx_test/index.php/MemberCard/test";
+        echo $url;
+        p(parse_url($url));
+        echo $_SERVER['HTTP_HOST'];
+        echo "<br>";
+        echo $_SERVER['REQUEST_URI'];
+        echo "<br>";
+        $a = 9;
+        try{
+            if ($a>6){
+                throw new Exception("变量不存在");
+            }
+        }catch (Exception $e){
+            echo $e->getMessage();
+        }
+
+        //echo sha1("limuz888");
     }
     public function json_response()
     {
@@ -179,21 +196,33 @@ class MemberCard extends CI_Controller
      * @param $access_token
      * @param $card_id
      */
-    public function send_card($access_token,$card_id)
+    public function send_card()
     {
+        //$card_id = "p1eypwuo_irv71ztx6nTV_VF3-yI";
+        $card_id = "p1eypwnudlxyL-vz3sh7riBFYSKM";
+        $access_token = $this->getAccessToke();
+        //$preUrl = "https://api.weixin.qq.com/cgi-bin/message/mass/preview?access_token={$access_token}";
         $preUrl = "https://api.weixin.qq.com/cgi-bin/message/mass/preview?access_token={$access_token}";
         //$url="https://api.weixin.qq.com/cgi-bin/message/mass/send?access_token={$access_token}";
         /*$data = '{
         "card_id":'.$card_id.'
         }';*/
-        $wxcardTpl = '{ 
-                        "touser":["%s","%s"], 
-                         "wxcard":{"card_id":"%s"},
-                         "msgtype":"wxcard" 
-                      }';
+//        '{
+//                        "touser":[%s,%s],
+//                         "wxcard":{"card_id":"%s"},
+//                         "msgtype":"wxcard"
+//                      }';
+        $wxcardTpl = [
+            "touser"=>'o1eypwn9DxGuI7iB2yk0xTrp5OUw',
+            "wxcard"=>["card_id"=>"p1eypwnudlxyL-vz3sh7riBFYSKM"],
+            "msgtype"=>"wxcard"
+        ];
         //"o1eypwpEdZ3V4iHSaSNN797lto88"
         //$wxcardTpl = file_get_contents('card.json');
-        $wxcard = sprintf($wxcardTpl,'o1eypwn9DxGuI7iB2yk0xTrp5OUw','o1eypwpEdZ3V4iHSaSNN797lto88',$card_id);
+        //$wxcard = sprintf($wxcardTpl,'o1eypwn9DxGuI7iB2yk0xTrp5OUw','o1eypwpEdZ3V4iHSaSNN797lto88',$card_id);
+        $wxcard = json_encode($wxcardTpl);
+        var_dump($wxcard);
+//        die;
         $status = http_post($preUrl,$wxcard);
         $d = json_decode($status,true);
         echo "发送会员卡信息<br>";
@@ -216,6 +245,202 @@ class MemberCard extends CI_Controller
         $data = http_post($url,$pol);
         $d = json_decode($data,true);
         var_dump($d);
+    }
+    /**
+     * 查询code接口，查询卡的状态
+     */
+    public function checkCode()
+    {
+//        $access_token = $this->getAccessToke();
+//        $url = "https://api.weixin.qq.com/card/code/get?access_token={$access_token}";
+        $wh = [
+            'card_id'=>"p1eypwuo_irv71ztx6nTV_VF3-yI",
+            'code'=>"280710807188",
+            'check_consume'=>true,
+        ];
+        echo urldecode($wh['code']);
+        die;
+        $cdata = json_encode($wh);
+        $cstatus = http_post($url,$cdata);
+        $d = json_decode($cstatus,true);
+        var_dump($d);
+    }
+
+    public function consume()
+    {
+        $access_token = $this->getAccessToke();
+        $url = "https://api.weixin.qq.com/card/code/consume?access_token={$access_token}";
+        $cw = ['code'=>"280710807188"];
+        $d = http_post($url,json_encode($cw));
+        var_dump($d);
+    }
+
+    /**
+     * 更新会员（卡券）信息
+     */
+    public function upMemCard()
+    {
+        $access_token = $this->getAccessToke();
+        $url = "https://api.weixin.qq.com/card/membercard/updateuser?access_token={$access_token}";
+        $ud = [
+            "code"=>"139625574332",
+            "card_id"=>"p1eypwnudlxyL-vz3sh7riBFYSKM",
+            "background_pic_url"=>"http://wx.qlogo.cn/mmopen/DQgGDOqYFIbFaWV0EoC6k7iap5gHgX4VxLNULx2s1vYBLKoiajAjZ288xTNianxEpoeT6SDdJtNBY8FNwvr3szUqN8ds3FLddl5/0",
+            "bonus"=>"3000",
+            "add_bonus"=>"30",
+            //"balance" => "3000",
+            //"add_balance"=>"-30",
+            "record_balance"=>"购买焦糖玛琪朵一杯，扣除金额30元。",
+            "custom_field_value1"=>"xxxxx",
+            "custom_field_value2"=>"xxxxx",
+            "notify_optional"=>[
+                "is_notify_bonus"=>true,
+                "is_notify_balance"=>true,
+                "is_notify_custom_field1"=>false
+            ]
+        ];
+        $upda = http_post($url,json_encode($ud,true));
+        p($upda);
+    }
+
+    /**
+     * 更改会员卡信息
+     */
+    public function updateCardMsg()
+    {
+        $access_token = $this->getAccessToke();
+        $url = "https://api.weixin.qq.com/card/update?access_token={$access_token}";
+        $updata = [
+            "card_id"=>"p1eypwnudlxyL-vz3sh7riBFYSKM",
+            "member_card"=>[
+                "base_info"=>[
+                    "logo_url"=>"http://wx.qlogo.cn/mmopen/DQgGDOqYFIbFaWV0EoC6k7iap5gHgX4VxLNULx2s1vYBLKoiajAjZ288xTNianxEpoeT6SDdJtNBY8FNwvr3szUqN8ds3FLddl5/0",
+                   "color"=>"Color010",
+                   "notice"=>"使用时向服务员出示此券",
+                   "service_phone"=> "020-88888888",
+                   "description"=> "不可与其他优惠同享\n如需团购券发票，请在消费时向商户提出\n店内均可使用，
+                   仅限堂食\n餐前不可打包，餐后未吃完，可打包\n本团购券不限人数，建议2人使用，
+                   超过建议人数须另收酱料费5元/位\n本单谢绝自带酒水饮料",
+                   "location_id_list"=> [123, 12321, 345345]
+                ],
+                "bonus_cleared"=>"每年12月30号积分清0。",
+                "bonus_rules"=> "每消费1元增加1积分。",
+                "prerogative"=> "XX会员可享有全场商品8折优惠。"
+            ]
+        ];
+        //p(json_encode($updata,JSON_UNESCAPED_UNICODE));
+        $chda = http_post($url,json_encode($updata,JSON_UNESCAPED_UNICODE));
+        $upstatus = json_decode($chda,true);
+        p($upstatus);
+    }
+
+    /**
+     * 查询用户已领取的卡券
+     */
+    public function getUserCard()
+    {
+        $access_token = $this->getAccessToke();
+        $url = "https://api.weixin.qq.com/card/user/getcardlist?access_token={$access_token}";
+        $u = ['openid'=>'o1eypwn9DxGuI7iB2yk0xTrp5OUw'];
+        $cd = http_post($url,json_encode($u));
+        $card = json_decode($cd,true);
+        echo "<pre>";
+        print_r($card);
+        echo "</pre>";
+    }
+
+    public function selectCard()
+    {
+        $access_token = $this->getAccessToke();
+        $url = "https://api.weixin.qq.com/card/batchget?access_token={$access_token}";
+        $pd = [
+            'offset'=>0,
+            "count"=>10,
+            "status_list"=>[
+                "CARD_STATUS_VERIFY_OK","CARD_STATUS_DISPATCH",'CARD_STATUS_VERIFY_FAIL'
+            ]
+        ];
+        $card = http_post($url,json_encode($pd));
+        $cardMsg = json_decode($card,true);
+        echo "<pre>";
+        print_r($cardMsg);
+        echo "</pre>";
+    }
+    /**
+     * 查询关注用户信息
+     * @return string
+     */
+    public function getUserlist()
+    {
+        $access_token = $this->getAccessToke();
+        $url = "https://api.weixin.qq.com/cgi-bin/user/get?access_token={$access_token}";
+        $u = file_get_contents($url);
+        $udata = json_decode($u,true);
+        if (isset($udata['errcode'])){
+            return "用户列表获取失败！";
+        }
+        $ulist = $udata['data'];
+        foreach($ulist['openid'] as $openid){
+            $userMsgUrl = "https://api.weixin.qq.com/cgi-bin/user/info?access_token={$access_token}&openid={$openid}&lang=zh_CN ";
+            $usermsg = file_get_contents($userMsgUrl);
+            $umsg = json_decode($usermsg,true);
+            echo "<pre>";
+            print_r($umsg);
+            echo "</pre>";
+        }
+    }
+
+    public function checkCardBonus()
+    {
+        $access_token = $this->getAccessToke();
+//        echo $access_token;
+//        die;
+        $url = "https://api.weixin.qq.com/card/membercard/userinfo/get?access_token={$access_token}";
+        $chda = [
+            "card_id" => "p1eypwnudlxyL-vz3sh7riBFYSKM",
+            "code" => "139625574332",
+        ];
+        $da = http_post($url,json_encode($chda));
+        $checkStatus = json_decode($da,true);
+        p($checkStatus);
+
+    }
+
+    /**
+     * 创建货架接口
+     */
+    public function showShave()
+    {
+        $access_token = $this->getAccessToke();
+        $url = "https://api.weixin.qq.com/card/landingpage/create?access_token={$access_token}";
+        $da = [
+            "banner"=>"http://wx.qlogo.cn/mmopen/DQgGDOqYFIbFaWV0EoC6k7iap5gHgX4VxLNULx2s1vYBLKoiajAjZ288xTNianxEpoeT6SDdJtNBY8FNwvr3szUqN8ds3FLddl5/0",
+            "page_title"=>"惠城优惠大派送",
+            "can_share"=>true,
+            "scene"=>"SCENE_NEAR_BY",
+            "card_list"=>[
+                [
+                    "card_id" => "p1eypwnudlxyL-vz3sh7riBFYSKM",
+                    "thumb_url" => "http://wx.qlogo.cn/mmopen/DQgGDOqYFIbFaWV0EoC6k7iap5gHgX4VxLNULx2s1vYBLKoiajAjZ288xTNianxEpoeT6SDdJtNBY8FNwvr3szUqN8ds3FLddl5/0"
+                ],[
+                    "card_id" => "p1eypwuo_irv71ztx6nTV_VF3-yI",
+                    "thumb_url"=>"http://wx.qlogo.cn/mmopen/DQgGDOqYFIbFaWV0EoC6k7iap5gHgX4VxLNULx2s1vYBLKoiajAjZ288xTNianxEpoeT6SDdJtNBY8FNwvr3szUqN8ds3FLddl5/0"
+                ]
+            ]
+        ];
+        $shave = http_post($url,json_encode($da,JSON_UNESCAPED_UNICODE));
+        $status = json_decode($shave,true);
+        p($status);
+
+    }
+
+    /**
+     * 设置所属行业
+     */
+    public function setIndustry()
+    {
+        $a = urlencode("你好，这是urlencode测试方法！");
+        echo urldecode($a);
     }
 
 }
