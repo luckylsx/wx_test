@@ -213,7 +213,7 @@ class Api extends CI_Controller
                                $contentStr = $content['text'] . "点击下面链接查看图片：".
                                $content['url'];
                            }
-                           $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr['text']);
+                           $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
                            echo $resultStr;
                        }
                 }else{
