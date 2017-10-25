@@ -210,7 +210,7 @@ class Api extends CI_Controller
                                $contentStr = $content['text'];
                            }elseif ($content['code']=='200000'){
                                $msgType = 'text';
-                               $contentStr = $content['text'] . "点击下面链接查看图片：".
+                               $contentStr = $content['text'] . "点击下面链接查看：".
                                $content['url'];
                            }elseif ($content['code']=='308000'){
                                 $this->replyNews($content,$fromUsername,$toUsername);
