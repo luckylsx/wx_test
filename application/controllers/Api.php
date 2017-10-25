@@ -205,10 +205,11 @@ class Api extends CI_Controller
                            $data = "key=7aa2a54501124c25b9dd833735cf7605&info=".urlencode($keyword)."&userid={$fromUsername}";
                            $re = http_post($url,$data);
                            $content = json_decode($re,true);
-                           if ($contentStr['code']==100000){
+                           if ($contentStr['code']=='100000'){
                                $msgType = 'text';
                                $contentStr = $content['text'];
-                           }elseif ($contentStr['code']==200000){
+                           }elseif ($contentStr['code']=='200000'){
+                               $msgType = 'text';
                                $contentStr = $content['text'] . "点击下面链接查看图片：".
                                $content['url'];
                            }
