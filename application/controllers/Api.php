@@ -212,6 +212,9 @@ class Api extends CI_Controller
                                $msgType = 'text';
                                $contentStr = $content['text'] . "点击下面链接查看图片：".
                                $content['url'];
+                           }elseif ($content['code']=='308000'){
+                                $this->replyNews($content,$fromUsername,$toUsername);
+                                exit;
                            }
                            $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
                            echo $resultStr;
@@ -295,5 +298,46 @@ class Api extends CI_Controller
         echo "<pre>";
         print_r($d);
         echo "</pre>";
+    }
+    public function replyNews($con,$fromUsername,$toUsername)
+    {
+/*        '<xml>
+<ToUserName><![CDATA[toUser]]></ToUserName>
+<FromUserName><![CDATA[fromUser]]></FromUserName>
+<CreateTime>12345678</CreateTime>
+<MsgType><![CDATA[news]]></MsgType>
+<ArticleCount>2</ArticleCount>
+<Articles>
+<item>
+<Title><![CDATA[title1]]></Title> 
+<Description><![CDATA[description1]]></Description>
+<PicUrl><![CDATA[picurl]]></PicUrl>
+<Url><![CDATA[url]]></Url>
+</item>
+<item>
+<Title><![CDATA[title]]></Title>
+<Description><![CDATA[description]]></Description>
+<PicUrl><![CDATA[picurl]]></PicUrl>
+<Url><![CDATA[url]]></Url>
+</item>
+</Articles>
+</xml>'*/
+    $newTpl = "<ToUserName><![CDATA[%s]]></ToUserName>
+<FromUserName><![CDATA[%s]]></FromUserName>
+<CreateTime>%s</CreateTime>
+<MsgType><![CDATA[news]]></MsgType>
+<ArticleCount>1</ArticleCount>
+<Articles>
+<item>
+<Title><![CDATA[%s]]></Title> 
+<Description><![CDATA[%s]]></Description>
+<PicUrl><![CDATA[%s]]></PicUrl>
+<Url><![CDATA[%s]]></Url>
+</item>
+</Articles>
+</xml>";
+//    $con = json_decode($content,true);
+        $newItem = sprintf($newTpl,$fromUsername,$toUsername,time(),$con['list'][0]['name'],$con['list'][0]['info'],$con['list'][0]['icon'],$con['list'][0]['detailurl']);
+        echo $newItem;
     }
 }
