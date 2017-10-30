@@ -8,7 +8,7 @@
     <title>session与cookie测试</title>
 </head>
 <body>
-    <form action="<?php echo site_url("Wxtest/check") ?>" method="post">
+    <form action="" method="post">
         cookie测试:<input type="text" name="co">
         <br>
         session测试：<input type="text" name="se">
