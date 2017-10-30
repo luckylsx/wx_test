@@ -386,4 +386,27 @@ class Wxtest extends CI_Controller
         }
         file_put_contents($log,date("Y-m-d H:i:s",time())." ".$content."\n",FILE_APPEND);
     }
+    public function check()
+    {
+        if (strtolower($_SERVER['REQUEST_METHOD'])=='post'){
+            session_start();
+
+            $data = $this->input->post();
+            //var_dump($data);
+            //die;
+            $co = $data['co'];
+            $se = $data['se'];
+            $t = strtotime("+1 day");
+            //echo $t;
+            //die;
+            setcookie("co",$co,$t);
+            $_SESSION['se'] = $se;
+
+        }
+        $this->load->view("test");
+    }
+    public function getinfo(){
+        session_start();
+        echo $_COOKIE['co'] , $_SESSION['se'];
+    }
 }
