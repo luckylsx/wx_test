@@ -403,6 +403,7 @@ class Wxtest extends CI_Controller
             $_SESSION['se'] = $se;
 
         }
+        echo site_url("Wxtest/check");
         $this->load->view("test");
     }
     public function getinfo(){
